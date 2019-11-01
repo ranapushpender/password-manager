@@ -46,6 +46,7 @@ namespace PasswordManager
         {
             if (addEntryDialog != null)
             {
+
                 addEntryDialog.Hide();
                 addEntryDialog = null;
             }
