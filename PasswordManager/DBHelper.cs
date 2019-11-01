@@ -123,6 +123,18 @@ namespace PasswordManager
             return entries;
         }
 
+        public bool deleteEntry(int id)
+        {
+            cmd.Parameters.Clear();
+            cmd.CommandText = "delete from entries where id=@id";
+            cmd.Parameters.AddWithValue("id", id);
+            if(cmd.ExecuteNonQuery()>=0)
+            {
+                return true;
+            }
+            return false;
+            
+        }
         public bool save(WalletEntry entry)
         {
             entry.encrypt();

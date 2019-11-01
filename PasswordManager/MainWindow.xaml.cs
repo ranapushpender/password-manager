@@ -27,7 +27,7 @@ namespace PasswordManager
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            User user = new User(text_user.Text, text_pass.Text);
+            User user = new User(text_user.Text, text_pass.Password);
             if (user.loginUser())
             {
                 panel userPanel = new panel();
@@ -43,7 +43,7 @@ namespace PasswordManager
 
         private void Button1_Click(object sender, RoutedEventArgs e)
         {
-            User user = new User(text_user.Text, text_pass.Text);
+            User user = new User(text_user.Text, text_pass.Password);
             if(user.registerUser())
             {
                 MessageBox.Show("User Created Successfully");

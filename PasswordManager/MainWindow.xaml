@@ -5,16 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PasswordManager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="306" Width="449.6">
+        Title="MainWindow" Height="306" Width="477.2">
     <Grid Margin="10,0,3.2,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="194*"/>
-            <RowDefinition Height="83*"/>
+            <RowDefinition Height="61*"/>
+            <RowDefinition Height="17*"/>
+            <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
-        <TextBox x:Name="text_user" HorizontalAlignment="Left" Height="31" Margin="111,67,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="238"/>
-        <TextBox x:Name="text_pass" HorizontalAlignment="Left" Height="31" Margin="111,122,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="238"/>
+        <TextBox x:Name="text_user" HorizontalAlignment="Left" Height="31" Margin="111,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="238"/>
+        <PasswordBox x:Name="text_pass" HorizontalAlignment="Left" Height="31" Margin="111,135,0,0" VerticalAlignment="Top" Width="238"/>
         <Button x:Name="button" Content="Login" HorizontalAlignment="Left" Margin="111,184,0,0" VerticalAlignment="Top" Width="103" Height="27" Click="Button_Click" Grid.RowSpan="2"/>
         <Button x:Name="button1" Content="Register" HorizontalAlignment="Left" Height="27" Margin="235,184,0,0" VerticalAlignment="Top" Width="114" Grid.RowSpan="2" Click="Button1_Click"/>
+        <Label x:Name="label" Content="USERNAME:" HorizontalAlignment="Left" Height="24" Margin="105,43,0,0" VerticalAlignment="Top" Width="238"/>
+        <Label x:Name="label1" Content="PASSWORD:" HorizontalAlignment="Right" Height="27" Margin="0,108,108.2,0" VerticalAlignment="Top" Width="238"/>
 
     </Grid>
 </Window>

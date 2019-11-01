@@ -70,5 +70,17 @@ namespace PasswordManager
             }
             return data;
         }
+
+        public void destroyEngine()
+        {
+            if (engine != null)
+            {
+                engine.encKey = null;
+                engine.cTransformEncryptor = null;
+                engine.cTransformDecryptor = null;
+                engine.tripleDES = null;
+                engine = null;
+            }
+        }
     }
 }

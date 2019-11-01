@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
 namespace PasswordManager
 {
     /// <summary>
@@ -21,6 +22,7 @@ namespace PasswordManager
     {
         User user;
         AddEntry addEntryDialog=null;
+        List<WalletEntry> walletEntries;
         public panel()
         {
             InitializeComponent();
@@ -28,7 +30,9 @@ namespace PasswordManager
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            dataGrid.ItemsSource = DBHelper.newInstance().getWalletEntries();
+
+            walletEntries = DBHelper.newInstance().getWalletEntries();
+            dataGrid.ItemsSource = walletEntries;
             lbl_username.Content= "Welcome, " + User.CurrentUser.Username;
 
             //WalletEntry entry = new WalletEntry("T1","url1","user1","pass1");
@@ -50,12 +54,50 @@ namespace PasswordManager
                 addEntryDialog.Hide();
                 addEntryDialog = null;
             }
-            dataGrid.ItemsSource = DBHelper.newInstance().getWalletEntries();
+            walletEntries = DBHelper.newInstance().getWalletEntries();
+            dataGrid.ItemsSource = walletEntries;
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             refreshData(true);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            
+            WalletEntry obj = ((FrameworkElement)sender).DataContext as WalletEntry;
+            if (obj.IsEncrypted)
+            {
+                obj.decrypt();
+            }
+            else
+            {
+                obj.encrypt();
+            }
+            dataGrid.ItemsSource = walletEntries;
+            dataGrid.Items.Refresh();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            WalletEntry obj = ((FrameworkElement)sender).DataContext as WalletEntry;
+            DBHelper.newInstance().deleteEntry(obj.Id);
+            walletEntries.Remove(obj);
+            dataGrid.ItemsSource = walletEntries;
+            dataGrid.Items.Refresh();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            User.CurrentUser.Password = "";
+            User.CurrentUser.Username = "";
+            User.CurrentUser.UID = -1;
+            User.CurrentUser = null;
+            walletEntries = null;
+            MainWindow window = new MainWindow();
+            window.Show();
+            this.Close();
         }
     }
 }

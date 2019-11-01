@@ -14,6 +14,7 @@ namespace PasswordManager
         string url;
         string username;
         string password;
+        bool isEncrypted;
 
         public WalletEntry(int id,string title,string url,string username,string password)
         {
@@ -22,6 +23,11 @@ namespace PasswordManager
             this.url = url;
             this.username = username;
             this.password = password;
+        }
+
+        public bool IsEncrypted {
+            get { return isEncrypted; }
+            set { isEncrypted = value; }
         }
         public WalletEntry( string title, string url, string username, string password)
         {
@@ -46,6 +52,7 @@ namespace PasswordManager
             {
                 Console.WriteLine(reader.GetInt32(0));
                 WalletEntry entry = new WalletEntry(reader.GetInt32(0), reader.GetString(1),reader.GetString(2),reader.GetString(3),reader.GetString(4));
+                entry.IsEncrypted = true;
                 entries.Add(entry);
             }
             return entries;
@@ -63,6 +70,7 @@ namespace PasswordManager
             this.url = data["url"];
             this.username = data["username"];
             this.password = data["password"];
+            isEncrypted = true;
         }
 
         public void decrypt()
@@ -77,6 +85,7 @@ namespace PasswordManager
             this.url = data["url"];
             this.username = data["username"];
             this.password = data["password"];
+            isEncrypted = false;
         }
     }
 }
