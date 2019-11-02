@@ -123,6 +123,28 @@ namespace PasswordManager
             return entries;
         }
 
+        public WalletEntry getWalletEntry(int id)
+        {
+            cmd.Parameters.Clear();
+            cmd.CommandText = "select id,title,username,password,url from entries where id=@id";
+            cmd.Parameters.AddWithValue("id", id);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            if(reader.HasRows)
+            {
+                reader.Read();
+                WalletEntry entry = new WalletEntry(reader.GetInt32(0), reader.GetString(1), reader.GetString(4), reader.GetString(2), reader.GetString(3));
+                entry.IsEncrypted = true;
+                reader.Close();
+                return entry;
+            }
+            else
+            {
+                reader.Close();
+                return null;
+            }
+            
+
+        }
         public bool deleteEntry(int id)
         {
             cmd.Parameters.Clear();
@@ -146,6 +168,24 @@ namespace PasswordManager
             cmd.Parameters.AddWithValue("pass", entry.Password);
             cmd.Parameters.AddWithValue("uid", User.CurrentUser.UID);
             if (cmd.ExecuteNonQuery()>0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool update(WalletEntry entry)
+        {
+            entry.encrypt();
+            cmd.Parameters.Clear();
+            Console.WriteLine("Entry ID:"+entry.Id);
+            cmd.CommandText = "update entries set title=@title,url=@url,username=@user,password=@pass where id=@id";
+            cmd.Parameters.AddWithValue("title", entry.Title);
+            cmd.Parameters.AddWithValue("url", entry.Url);
+            cmd.Parameters.AddWithValue("user", entry.Username);
+            cmd.Parameters.AddWithValue("pass", entry.Password);
+            cmd.Parameters.AddWithValue("id", entry.Id);
+            if (cmd.ExecuteNonQuery() > 0)
             {
                 return true;
             }

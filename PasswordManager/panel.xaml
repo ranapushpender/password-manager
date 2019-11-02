@@ -39,7 +39,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Margin="10px" >UPDATE</Button>
+                            <Button Margin="10px" Click="Button_Click_3" >UPDATE</Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

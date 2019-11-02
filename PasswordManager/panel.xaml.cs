@@ -42,7 +42,7 @@ namespace PasswordManager
 
         private void Btn_add_entry_Click(object sender, RoutedEventArgs e)
         {
-            addEntryDialog = new AddEntry(refreshData);
+            addEntryDialog = AddEntry.newIntance(null,refreshData);
             addEntryDialog.ShowDialog();
         }
 
@@ -98,6 +98,13 @@ namespace PasswordManager
             MainWindow window = new MainWindow();
             window.Show();
             this.Close();
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            WalletEntry obj = ((FrameworkElement)sender).DataContext as WalletEntry;
+            addEntryDialog = AddEntry.newIntance(obj.Id,refreshData);
+            addEntryDialog.ShowDialog();
         }
     }
 }

@@ -46,7 +46,7 @@ namespace PasswordManager
             User user = new User(text_user.Text, text_pass.Password);
             if(user.registerUser())
             {
-                MessageBox.Show("User Created Successfully");
+                MessageBox.Show("User Created Successfully. Please Do not loose your password as without it your data cannot be recovered");
             }
             else
             {
