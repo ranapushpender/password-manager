@@ -44,13 +44,14 @@ namespace PasswordManager
                 }
                 add.fillData();
                 add.op = add.updateEntry;
-                add.btn_add_entry_submit.Content = "Update";
+                add.btn_add_entry_submit.Content = "UPDATE";
                 return add;
             }
             else
             {
                 AddEntry add = new AddEntry(callback);
                 add.op = add.saveEntry;
+                add.btn_add_entry_submit.Content = "ADD";
                 return add;
             }
         }

@@ -23,8 +23,31 @@ namespace PasswordManager
             this.url = url;
             this.username = username;
             this.password = password;
+            
         }
 
+        public object this[int index]
+        {
+            get
+            {
+                switch (index)
+                {
+                    case 0:
+                        return id;
+                    case 1:
+                        return title;
+                    case 2:
+                        return url;
+                    case 3:
+                        return username;
+                    case 4:
+                        return password;
+                    default:
+                        return 1;
+                }
+            }
+            
+        }
         public bool IsEncrypted {
             get { return isEncrypted; }
             set { isEncrypted = value; }

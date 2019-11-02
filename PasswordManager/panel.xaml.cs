@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -15,14 +18,85 @@ using System.Windows.Shapes;
 
 namespace PasswordManager
 {
+
     /// <summary>
     /// Interaction logic for panel.xaml
     /// </summary>
     public partial class panel : Window
     {
+        /*Hotkey*/
+        [DllImport("user32.dll")]
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+
+        [DllImport("user32.dll")]
+        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        private const uint MOD_ALT = 0x0001; //ALT
+        private const uint MOD_CONTROL = 0x0002; //CTRL
+
+        private IntPtr _windowHandle;
+        private HwndSource _source;
+        private const int HOTKEY_ID = 9000;
+        private const uint VK_OEM_4 = 0x5A;
+        private const uint VK_OEM_6 = 0x58;
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+
+            _windowHandle = new WindowInteropHelper(this).Handle;
+            _source = HwndSource.FromHwnd(_windowHandle);
+            _source.AddHook(HwndHook);
+
+            RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_CONTROL, VK_OEM_4); //CTRL + CAPS_LOCK
+            RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_CONTROL, VK_OEM_6); //CTRL + CAPS_LOCK
+        }
+        private IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            const int WM_HOTKEY = 0x0312;
+            
+            switch (msg)
+            {
+                case WM_HOTKEY:
+                    
+                    switch (wParam.ToInt32())
+                    {
+                        case HOTKEY_ID:
+                            Console.WriteLine("Handler exec");
+                            int vkey = (((int)lParam >> 16) & 0xFFFF);
+                            WalletEntry wEntry = walletEntries[currentFillEntry];
+                            if (vkey == VK_OEM_4)
+                            {
+                                
+                                if (wEntry != null)
+                                {
+
+                                    Console.WriteLine(wEntry.Username);
+                                    var e1 = new System.Windows.Input.KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Z) { RoutedEvent = Keyboard.KeyDownEvent };
+                                    
+                                    InputManager.Current.ProcessInput(e1);
+                                }
+                            }
+                            else if (vkey == VK_OEM_6)
+                            {
+                                if (wEntry != null)
+                                {
+                                    Console.WriteLine(wEntry.Password);
+                                    SendKeys.SendWait(wEntry.Password);
+                                }
+                            }
+                            handled = true;
+                            break;
+                    }
+                    break;
+            }
+            return IntPtr.Zero;
+        }
+        /*Hotkey*/
+
+
         User user;
         AddEntry addEntryDialog=null;
         List<WalletEntry> walletEntries;
+        int currentFillEntry = -1;
         public panel()
         {
             InitializeComponent();
@@ -105,6 +179,34 @@ namespace PasswordManager
             WalletEntry obj = ((FrameworkElement)sender).DataContext as WalletEntry;
             addEntryDialog = AddEntry.newIntance(obj.Id,refreshData);
             addEntryDialog.ShowDialog();
+        }
+
+        private void Btn_gen_pass_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            WalletEntry obj = (WalletEntry)dataGrid.CurrentCell.Item;
+            System.Windows.Clipboard.SetText(obj[dataGrid.CurrentCell.Column.DisplayIndex].ToString());
+            
+
+
+
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            _source.RemoveHook(HwndHook);
+            UnregisterHotKey(_windowHandle, HOTKEY_ID);
+            base.OnClosed(e);
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            currentFillEntry = walletEntries.IndexOf((WalletEntry)dataGrid.CurrentCell.Item);
+            
         }
     }
 }
