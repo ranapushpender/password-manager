@@ -5,16 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PasswordManager"
         mc:Ignorable="d"
-        Title="panel" Height="603.6" Width="1131.2"
+        Title="panel" Height="656" Width="1178"
         Loaded="Window_Loaded">
-    
-    <Grid Margin="0,0,21.6,45.2">
+
+    <Grid Margin="0,0,18.2,45.4">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="773*"/>
-            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="1140*"/>
+            <ColumnDefinition Width="13*"/>
         </Grid.ColumnDefinitions>
         <Label x:Name="lbl_username" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top" Height="42" Width="474" Margin="10,10,0,0" FontSize="24"/>
-        <DataGrid x:Name="dataGrid" IsReadOnly="true" SelectionMode="Single" SelectionUnit="Cell" AutoGenerateColumns="False" Margin="0,112,-23.8,0" HorizontalScrollBarVisibility="Visible"  VerticalScrollBarVisibility="Visible" Grid.ColumnSpan="2">
+        <DataGrid x:Name="dataGrid" IsReadOnly="true" SelectionMode="Single" SelectionUnit="Cell" AutoGenerateColumns="False" Margin="0,112,-24.2,51" HorizontalScrollBarVisibility="Visible"  VerticalScrollBarVisibility="Visible" Grid.ColumnSpan="2">
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Copy Value" Click="MenuItem_Click" />
@@ -22,6 +22,13 @@
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTextColumn  Width="30" Header="ID" Binding="{Binding Id}"/>
+                <DataGridTemplateColumn Width="50" Header="SEL">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Margin="10px" Click="Button_Click_4">*</Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Width="200" Header="TITLE" Binding="{Binding Title}"/>
                 <DataGridHyperlinkColumn Width="200" Header="URL" Binding="{Binding Url}"/>
                 <DataGridTextColumn Width="200" Header="USERNAME" Binding="{Binding Username}"/>
@@ -49,22 +56,19 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-
-                <DataGridTemplateColumn Width="30">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Margin="10px" Click="Button_Click_4">X</Button>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Rectangle Fill="#FFF4F4F5" Height="55" Margin="0,57,-23.8,0" Stroke="Black" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-        <Button x:Name="btn_add_entry" Content="Add Entry" HorizontalAlignment="Left" Margin="19,76,0,0" VerticalAlignment="Top" Width="75" Click="Btn_add_entry_Click"/>
-        <Button x:Name="btn_gen_pass" Content="Change Password" HorizontalAlignment="Left" Margin="138,76,0,0" VerticalAlignment="Top" Width="120" Click="Btn_gen_pass_Click"/>
-        <Button x:Name="btn_refresh" Content="Refresh" HorizontalAlignment="Left" Margin="300,76,0,0" VerticalAlignment="Top" Width="75" Click="Btn_refresh_Click"/>
-        <Button x:Name="button" Content="Lock" HorizontalAlignment="Left" Height="19" Margin="1027,76,0,0" VerticalAlignment="Top" Width="66" Click="Button_Click_2" Grid.ColumnSpan="2"/>
-        <Label x:Name="label" Content="Right Click on a Cell to Copy" HorizontalAlignment="Left" Height="37" Margin="10,530,0,-37" VerticalAlignment="Top" Width="422" FontSize="14"/>
+        <Rectangle Fill="#FFF4F4F5" Height="55" Margin="0,57,-24.2,0" Stroke="Black" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <Button x:Name="btn_add_entry" Content="Add Entry" HorizontalAlignment="Left" Margin="19,76,0,0" VerticalAlignment="Top" Width="75" Click="Btn_add_entry_Click" Height="19"/>
+        <Button x:Name="btn_gen_pass" Content="Change Password" HorizontalAlignment="Left" Margin="138,76,0,0" VerticalAlignment="Top" Width="120" Click="Btn_gen_pass_Click" Height="19"/>
+        <Button x:Name="btn_refresh" Content="Refresh" HorizontalAlignment="Left" Margin="300,76,0,0" VerticalAlignment="Top" Width="75" Click="Btn_refresh_Click" Height="19"/>
+        <Button x:Name="button" Content="Lock" HorizontalAlignment="Left" Height="19" Margin="1064,76,0,0" VerticalAlignment="Top" Width="66" Click="Button_Click_2"/>
+        <Label x:Name="label" HorizontalAlignment="Left" Height="97" Margin="10,530,0,-46" VerticalAlignment="Top" Width="1100" FontSize="14">
+            <TextBlock Height="92">
+                1. Right Click on a cell to copy its value
+            <LineBreak></LineBreak>2. To fill the username and password in any window first click the button in the "SEL" column and then<LineBreak></LineBreak>=> Use the combination CTRL+. for filling username <LineBreak></LineBreak>=> Use CTRL+/ for password
+            </TextBlock>
+        </Label>
 
     </Grid>
 </Window>

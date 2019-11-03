@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,12 +33,13 @@ namespace PasswordManager
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
         private const uint MOD_ALT = 0x0001; //ALT
         private const uint MOD_CONTROL = 0x0002; //CTRL
+        //private const uint MOD_CONTROL = 0x0100| 0x0040; 
 
         private IntPtr _windowHandle;
         private HwndSource _source;
         private const int HOTKEY_ID = 9000;
-        private const uint VK_OEM_4 = 0x5A;
-        private const uint VK_OEM_6 = 0x58;
+        private const uint VK_OEM_4 = 0xBE;
+        private const uint VK_OEM_6 = 0xBF;
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
@@ -68,19 +70,37 @@ namespace PasswordManager
                                 
                                 if (wEntry != null)
                                 {
+                                    bool changed = false;
+                                    if (wEntry.IsEncrypted)
+                                    {
+                                        wEntry.decrypt();
+                                        changed = true;
+                                    }
 
-                                    Console.WriteLine(wEntry.Username);
-                                    var e1 = new System.Windows.Input.KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Z) { RoutedEvent = Keyboard.KeyDownEvent };
-                                    
-                                    InputManager.Current.ProcessInput(e1);
+                                    //Console.WriteLine(wEntry.Username);
+                                    Thread.Sleep(500);
+                                    SendKeys.SendWait(wEntry.Username);
+                                    if (changed = true)
+                                    {
+                                        wEntry.encrypt();
+                                    }
                                 }
                             }
                             else if (vkey == VK_OEM_6)
                             {
-                                if (wEntry != null)
+                                bool changed = false;
+                                if (wEntry.IsEncrypted)
                                 {
-                                    Console.WriteLine(wEntry.Password);
-                                    SendKeys.SendWait(wEntry.Password);
+                                    wEntry.decrypt();
+                                    changed = true;
+                                }
+
+                                //Console.WriteLine(wEntry.Username);
+                                Thread.Sleep(500);
+                                SendKeys.SendWait(wEntry.Password);
+                                if (changed = true)
+                                {
+                                    wEntry.encrypt();
                                 }
                             }
                             handled = true;
